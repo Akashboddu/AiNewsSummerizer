@@ -1,44 +1,108 @@
 # 📰 AI News Summarizer
 
-An AI-powered news summarization tool built with **Streamlit**, **NewsAPI**, **Tavily API**, and **OpenAI / Hugging Face Transformers**.  
-It fetches **latest real-time news** based on user topics and provides **short AI-generated summaries**.
+A **Streamlit-based web application** that fetches the latest and most relevant news articles from **multiple sources** (NewsAPI & Tavily) and allows you to **summarize each article on demand** using a **Hugging Face BART model** — without any API usage limits.
 
 ---
 
-## 📌 Features
-- **Real-time news fetching** using:
-  - [NewsAPI](https://newsapi.org) → For latest headlines & topic-based search
-  - [Tavily Search API](https://tavily.com) → For deep search & additional sources
-- **AI-powered summarization** using:
-  - **OpenAI GPT-3.5** *(or Hugging Face DistilBART for free use)*
-- **Interactive UI** built with [Streamlit](https://streamlit.io)
-- **Custom topic search** (e.g., *sports, elections, AI, technology, INS vs ENG match updates*)
-- **Clickable links** to read the full articles
-- **Responsive & easy to use** on both desktop and mobile
+## 🚀 Features
+- **Multi-source search** → Combines **NewsAPI** and **Tavily** for both breadth and depth of coverage.
+- **Dual relevance filtering** → Uses **keyword matching** + **semantic similarity (SentenceTransformer)** to ensure only highly relevant articles are shown.
+- **On-demand summarization** → Summarize individual articles instantly with a click (faster than summarizing everything at once).
+- **Persistent results** → Uses `st.session_state` so results stay on screen after interactions.
+- **No OpenAI quota issues** → Uses **Hugging Face's `facebook/bart-large-cnn`** model locally for summarization.
+- **Responsive UI** built with Streamlit.
 
 ---
 
-## 🛠️ Tech Stack
-- **Python** → Core programming language
-- **Streamlit** → Web app framework
+## 🛠 Tech Stack
+- **Python 3.9+**
+- **Streamlit** → Interactive UI
 - **Requests** → API calls
-- **dotenv** → Environment variable management
-- **OpenAI API** → AI summarization
-- **Hugging Face Transformers** → Free offline summarization (optional)
-- **NewsAPI** → Latest news headlines
-- **Tavily API** → Deep web search for news
+- **Hugging Face Transformers** → Local summarization model
+- **SentenceTransformers** → Semantic similarity filtering
+- **Tavily API** → Deep web news search
+- **NewsAPI** → Real-time headlines
+- **dotenv** → Manage API keys securely
 
 ---
 
 ## 📂 Project Structure
+```
 NewsSummarizer/
-│
-├── app.py # Streamlit main application
-├── news_fetcher.py # Fetches latest news from NewsAPI
-├── tavily_agent.py # Tavily API deep search agent
-├── requirements.txt # Python dependencies
-├── .env # API keys (not shared publicly)
-└── README.md # Project documentation
+│── app.py               # Main Streamlit application
+│── news_fetcher.py      # Fetch news from NewsAPI
+│── tavily_agent.py      # Fetch news from Tavily
+│── requirements.txt     # Python dependencies
+│── .env                 # API keys (not shared in repo)
+│── README.md            # Project documentation
+```
 
-yaml
-Copy code
+---
+
+## ⚙️ Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/news-summarizer.git
+   cd news-summarizer
+   ```
+
+2. **Create a virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Mac/Linux
+   venv\Scripts\activate     # Windows
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Create a `.env` file** in the root folder:
+   ```
+   NEWSAPI_KEY=your_newsapi_key
+   TAVILY_API_KEY=your_tavily_api_key
+   ```
+
+5. **Run the application**
+   ```bash
+   streamlit run app.py
+   ```
+
+---
+
+## 🔑 Getting API Keys
+- **NewsAPI** → [https://newsapi.org/](https://newsapi.org/)  
+- **Tavily API** → [https://tavily.com/](https://tavily.com/)  
+
+---
+
+## 📸 How It Works
+1. Enter a **topic** (e.g., "Coolie movie collections", "India elections", "AI").
+2. Click **Fetch News** to get articles from **both NewsAPI and Tavily**.
+3. Only **highly relevant articles** (via keyword + semantic filter) are displayed in expandable sections.
+4. Click **Summarize Article** for any article you want to condense.
+5. Read a **short, AI-generated summary** instantly.
+
+---
+
+## 📝 Example Search
+**Topic:** `recent words of trump on india`  
+✅ Found **highly relevant articles**.  
+🔗 Clicked "Summarize" → Generated a **clear and concise summary** in seconds.
+
+---
+
+## 📌 Notes
+- The summarizer runs **locally** via Hugging Face; first load might be slower due to model download.
+- You can tweak semantic similarity threshold in:
+  ```python
+  return score >= 0.5
+  ```
+- Internet connection required for fetching news.
+
+---
+
+## 📜 License
+This project is licensed under the MIT License.
